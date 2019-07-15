@@ -8,12 +8,12 @@ import {
 	buildApiGatewayOkResponse,
 	buildApiGatewayServerFailure,
 	buildApiGatewayUnauthorized
-} from "../../src/api-gateway/apiGatewayResponse";
+} from "../src/index";
 import {
 	HEADER_CONTENT_TYPE,
 	HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS,
 	HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
-} from "../../src/utils/constants";
+} from "../src/utils/constants";
 
 const randomBody = {
 	message: casual.sentence
