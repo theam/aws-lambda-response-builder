@@ -9,6 +9,10 @@ npm install aws-lambda-response-builder --save
 yarn add aws-lambda-response-builder
 ```
 
+## Contributing
+
+Please read our [contributing page](/CONTRIBUTING.md)
+
 ## Usage
 
 ### JavaScript
