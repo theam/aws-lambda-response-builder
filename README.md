@@ -142,3 +142,35 @@ It will create a response such as:
     body: '{}'
 }
 ```
+
+## Scripts
+
+### Tslint
+
+Check linting errors
+
+```bash
+npm run tslint:check
+yarn tslint:check
+```
+
+Fix linting errors
+
+```bash
+npm run tslint:fix
+yarn tslint:fix
+```
+
+### Test
+
+```bash
+npm run test
+yarn test
+```
+
+Test with coverage
+
+```bash
+npm run test:coverage
+yarn test:coverage
+```
