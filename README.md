@@ -143,6 +143,19 @@ It will create a response such as:
 }
 ```
 
+### Using thhe builder
+
+```typescript
+import { ApiGatewayResponseBuilder } from "aws-lambda-response-builder";
+
+const response = new ApiGatewayResponseBuilder(200, {
+	message: "yay! using aws-lambda-response-builder"
+})
+	.withCors()
+	.withHeader("dummyHeaderKey", "dummyHeaderValue")
+	.build();
+```
+
 ## Scripts
 
 ### Tslint
