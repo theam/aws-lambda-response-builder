@@ -2,6 +2,8 @@ import { APIGatewayProxyResult } from "aws-lambda";
 import HttpStatus from "http-status-codes";
 import { ApiGatewayResponseBuilder } from "./api-gateway/apiGatewayResponseBuilder";
 
+export * from "./api-gateway/apiGatewayResponseBuilder";
+
 export const buildApiGatewayOkResponse = (
 	body?: object,
 	cors?: boolean

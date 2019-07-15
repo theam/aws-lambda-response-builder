@@ -3,3 +3,6 @@ dist
 
 # Test
 coverage
+
+# dependencies
+node_modules
