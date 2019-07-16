@@ -1,0 +1,114 @@
+version: 2
+
+defaults: &defaults
+    working_directory: ~/repo
+    docker:
+        - image: circleci/node:8.9.1
+
+jobs:
+    build:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
+
+            - run: npm install
+            - run:
+                  name: Build project
+                  command: tsc
+
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+
+    lint:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
+
+            - run:
+                  name: Run linter
+                  command: npm tslint:check
+
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+
+    test:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
+
+            - run:
+                  name: Run tests
+                  command: npm test:ci
+
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+
+    deploy:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                  at: ~/repo
+            - run:
+                  name: Authenticate with registry
+                  command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/repo/.npmrc
+            - run:
+                  name: Publish package
+                  command: npm publish
+
+workflows:
+    version: 2
+    test-deploy:
+        jobs:
+            - build
+            - lint:
+                  requires:
+                      - build
+            - test:
+                  requires:
+                      - build
+                      - lint
+            - deploy:
+                  type: approval
+                  requires:
+                      - build
+                      - test
+                      - lint
+                  filters:
+                      tags:
+                          only: /^v.*/
+                      branches:
+                          only:
+                              - master
