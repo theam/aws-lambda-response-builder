@@ -11,7 +11,7 @@
 		"test:coverage": "jest --coverage --watchAll",
 		"test:ci": "jest --ci --maxWorkers=2 --detectOpenHandles --forceExit",
 		"eslint:check": "eslint src/**/**.ts",
-		"eslint:fix": "eslint src/**/**.ts fix"
+		"eslint:fix": "eslint src/**/**.ts --fix"
 	},
 	"keywords": [
 		"aws",
