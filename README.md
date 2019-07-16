@@ -1,5 +1,6 @@
 # aws-lambda-response-builder
 
+[![CircleCI](https://circleci.com/gh/theam/aws-lambda-response-builder/tree/master.svg?style=svg)](https://circleci.com/gh/theam/aws-lambda-response-builder/tree/master)
 [![npm](https://img.shields.io/npm/v/aws-lambda-response-builder.svg)](https://www.npmjs.com/package/aws-lambda-response-builder)
 
 A Node.js module that helps you easily creates AWS Lambda responses.
