@@ -26,6 +26,7 @@
 	"license": "SEE LICENSE IN license.md",
 	"devDependencies": {
 		"@types/aws-lambda": "^8.10.28",
+		"@types/jest": "^24.0.15",
 		"casual": "^1.6.2",
 		"jest": "^24.8.0",
 		"ts-jest": "^24.0.2",
