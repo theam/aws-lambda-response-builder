@@ -165,20 +165,20 @@ const response = new ApiGatewayResponseBuilder(200, {
 
 ## Scripts
 
-### Tslint
+### ESLint
 
 Check linting errors
 
 ```bash
-npm run tslint:check
-yarn tslint:check
+npm run eslint:check
+yarn eslint:check
 ```
 
 Fix linting errors
 
 ```bash
-npm run tslint:fix
-yarn tslint:fix
+npm run eslint:fix
+yarn eslint:fix
 ```
 
 ### Test
