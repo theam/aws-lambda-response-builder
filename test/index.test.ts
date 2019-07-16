@@ -1,142 +1,211 @@
-import casual from "casual";
+import casual from 'casual'
 import {
-	buildApiGatewayAcceptedResponse,
-	buildApiGatewayBadRequest,
-	buildApiGatewayCreatedresponse,
-	buildApiGatewayCustomStatusCode,
-	buildApiGatewayNotFound,
-	buildApiGatewayOkResponse,
-	buildApiGatewayServerFailure,
-	buildApiGatewayUnauthorized
-} from "../src/index";
+  buildApiGatewayAcceptedResponse,
+  buildApiGatewayBadRequest,
+  buildApiGatewayCreatedresponse,
+  buildApiGatewayCustomStatusCode,
+  buildApiGatewayNotFound,
+  buildApiGatewayOkResponse,
+  buildApiGatewayServerFailure,
+  buildApiGatewayUnauthorized
+} from '../src/index'
+import HttpStatus from 'http-status-codes'
 import {
-	HEADER_CONTENT_TYPE,
-	HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS,
-	HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
-} from "../src/utils/constants";
+  HEADER_CONTENT_TYPE,
+  HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS,
+  HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
+} from '../src/utils/constants'
 
 const randomBody = {
-	message: casual.sentence
-};
+  message: casual.sentence
+}
 
 const testResponseTypes = [
-	{
-		type: "OK",
-		fn: buildApiGatewayOkResponse(),
-		expectedStatusCode: 200
-	},
-	{
-		type: "Created",
-		fn: buildApiGatewayCreatedresponse(),
-		expectedStatusCode: 201
-	},
-	{
-		type: "Created",
-		fn: buildApiGatewayAcceptedResponse(),
-		expectedStatusCode: 202
-	},
-	{
-		type: "Bad request",
-		fn: buildApiGatewayBadRequest(),
-		expectedStatusCode: 400
-	},
-	{
-		type: "Unauthorized",
-		fn: buildApiGatewayUnauthorized(),
-		expectedStatusCode: 401
-	},
-	{
-		type: "NotFound",
-		fn: buildApiGatewayNotFound(),
-		expectedStatusCode: 404
-	},
-	{
-		type: "Server Failure",
-		fn: buildApiGatewayServerFailure(),
-		expectedStatusCode: 500
-	},
-	{
-		type: "Custom Status Code",
-		fn: buildApiGatewayCustomStatusCode(504),
-		expectedStatusCode: 504
-	}
-];
+  {
+    type: 'OK',
+    fn: buildApiGatewayOkResponse,
+    expectedStatusCode: HttpStatus.OK
+  },
+  {
+    type: 'Created',
+    fn: buildApiGatewayCreatedresponse,
+    expectedStatusCode: HttpStatus.CREATED
+  },
+  {
+    type: 'Created',
+    fn: buildApiGatewayAcceptedResponse,
+    expectedStatusCode: HttpStatus.ACCEPTED
+  },
+  {
+    type: 'Bad request',
+    fn: buildApiGatewayBadRequest,
+    expectedStatusCode: HttpStatus.BAD_REQUEST
+  },
+  {
+    type: 'Unauthorized',
+    fn: buildApiGatewayUnauthorized,
+    expectedStatusCode: HttpStatus.UNAUTHORIZED
+  },
+  {
+    type: 'NotFound',
+    fn: buildApiGatewayNotFound,
+    expectedStatusCode: HttpStatus.NOT_FOUND
+  },
+  {
+    type: 'Server Failure',
+    fn: buildApiGatewayServerFailure,
+    expectedStatusCode: HttpStatus.INTERNAL_SERVER_ERROR
+  }
+]
 
-describe("API Gateway Response", () => {
-	describe("no body", () => {
-		testResponseTypes.forEach(fixture => {
-			describe(fixture.type, () => {
-				it("returns expected reponse", () => {
-					const response = buildApiGatewayOkResponse();
+describe('API Gateway Response', () => {
+  describe('no body', () => {
+    testResponseTypes.forEach(fixture => {
+      describe(fixture.type, () => {
+        it('returns expected reponse', () => {
+          const response = fixture.fn()
 
-					expect(response.statusCode).toEqual(200);
+          expect(response.statusCode).toEqual(
+            fixture.expectedStatusCode
+          )
 
-					expect(response.body).toEqual(JSON.stringify({}));
+          expect(response.body).toEqual(JSON.stringify({}))
 
-					expect(response.headers).not.toBeNull();
-					expect(
+          expect(response.headers).not.toEqual(null)
+          expect(
 						response.headers![
-							HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
+						  HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
 						]
-					).toEqual("*");
-					expect(
+          ).toEqual('*')
+          expect(
 						response.headers![
-							HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS
+						  HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS
 						]
-					).toBeTruthy();
-					expect(response.headers![HEADER_CONTENT_TYPE]).toEqual(
-						"application/json"
-					);
-				});
-			});
-		});
-	});
+          ).toBeTruthy()
+          expect(response.headers![HEADER_CONTENT_TYPE]).toEqual(
+            'application/json'
+          )
+        })
+      })
+    })
 
-	describe("with body", () => {
-		testResponseTypes.forEach(fixture => {
-			describe(fixture.type, () => {
-				it("returns expected reponse", () => {
-					const response = buildApiGatewayOkResponse(randomBody);
+    describe('custom status code response', () => {
+      it('returns expected reponse', () => {
+        const expectedStatusCode = HttpStatus.LOCKED
+        const response = buildApiGatewayCustomStatusCode(
+          expectedStatusCode
+        )
 
-					expect(response.statusCode).toEqual(200);
+        expect(response.statusCode).toEqual(expectedStatusCode)
 
-					expect(response.body).toEqual(JSON.stringify(randomBody));
+        expect(response.body).toEqual(JSON.stringify({}))
 
-					expect(response.headers).not.toBeNull();
-					expect(
+        expect(response.headers).not.toBeNull()
+        expect(
+					response.headers![HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN]
+        ).toEqual('*')
+        expect(
+					response.headers![
+					  HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS
+					]
+        ).toBeTruthy()
+        expect(response.headers![HEADER_CONTENT_TYPE]).toEqual(
+          'application/json'
+        )
+      })
+    })
+  })
+
+  describe('with body', () => {
+    testResponseTypes.forEach(fixture => {
+      describe(fixture.type, () => {
+        it('returns expected reponse', () => {
+          const response = fixture.fn(randomBody)
+
+          expect(response.statusCode).toEqual(
+            fixture.expectedStatusCode
+          )
+
+          expect(response.body).toEqual(JSON.stringify(randomBody))
+
+          expect(response.headers).not.toBeNull()
+          expect(
 						response.headers![
-							HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
+						  HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN
 						]
-					).toEqual("*");
-					expect(
+          ).toEqual('*')
+          expect(
 						response.headers![
-							HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS
+						  HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS
 						]
-					).toBeTruthy();
-					expect(response.headers![HEADER_CONTENT_TYPE]).toEqual(
-						"application/json"
-					);
-				});
-			});
-		});
-	});
+          ).toBeTruthy()
+          expect(response.headers![HEADER_CONTENT_TYPE]).toEqual(
+            'application/json'
+          )
+        })
+      })
+    })
 
-	describe("without cors", () => {
-		testResponseTypes.forEach(fixture => {
-			describe(fixture.type, () => {
-				it("returns expected reponse", () => {
-					const response = buildApiGatewayOkResponse(
-						undefined,
-						false
-					);
+    describe('custom status code response', () => {
+      it('returns expected reponse', () => {
+        const expectedStatusCode = HttpStatus.LOCKED
+        const response = buildApiGatewayCustomStatusCode(
+          expectedStatusCode,
+          randomBody
+        )
 
-					expect(response.statusCode).toEqual(200);
+        expect(response.statusCode).toEqual(expectedStatusCode)
 
-					expect(response.body).toEqual(JSON.stringify({}));
+        expect(response.body).toEqual(JSON.stringify(randomBody))
 
-					expect(response.headers).toEqual({});
-				});
-			});
-		});
-	});
-});
+        expect(response.headers).not.toBeNull()
+        expect(
+					response.headers![HEADER_CORS_ACCESS_CONTROL_ALLOW_ORIGIN]
+        ).toEqual('*')
+        expect(
+					response.headers![
+					  HEADER_CORS_ACCESS_CONTROL_ALLOW_CREDENTIALS
+					]
+        ).toBeTruthy()
+        expect(response.headers![HEADER_CONTENT_TYPE]).toEqual(
+          'application/json'
+        )
+      })
+    })
+  })
+
+  describe('without cors', () => {
+    testResponseTypes.forEach(fixture => {
+      describe(fixture.type, () => {
+        it('returns expected reponse', () => {
+          const response = fixture.fn(undefined, false)
+
+          expect(response.statusCode).toEqual(
+            fixture.expectedStatusCode
+          )
+
+          expect(response.body).toEqual(JSON.stringify({}))
+
+          expect(response.headers).toEqual({})
+        })
+      })
+    })
+
+    describe('custom status code response', () => {
+      it('returns expected reponse', () => {
+        const expectedStatusCode = HttpStatus.LOCKED
+        const response = buildApiGatewayCustomStatusCode(
+          expectedStatusCode,
+          undefined,
+          false
+        )
+
+        expect(response.statusCode).toEqual(expectedStatusCode)
+
+        expect(response.body).toEqual(JSON.stringify({}))
+
+        expect(response.headers).toEqual({})
+      })
+    })
+  })
+})

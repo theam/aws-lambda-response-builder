@@ -1,86 +1,86 @@
 version: 2
 
 defaults: &defaults
-    working_directory: ~/repo
-    docker:
-        - image: circleci/node:8.9.1
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.9.1
 
 jobs:
-    build:
-        <<: *defaults
-        steps:
-            - checkout
+  build:
+    <<: *defaults
+    steps:
+      - checkout
 
-            - restore_cache:
-                  keys:
-                      - v1-dependencies-{{ checksum "package.json" }}
-                      - v1-dependencies-
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
 
-            - run: npm install
-            - run: sudo npm install typescript -g
-            - run:
-                  name: Build project
-                  command: tsc
+      - run: npm install
+      - run: sudo npm install typescript -g
+      - run:
+          name: Build project
+          command: tsc
 
-            - save_cache:
-                  paths:
-                      - node_modules
-                  key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-            - persist_to_workspace:
-                  root: ~/repo
-                  paths: .
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
 
-    lint:
-        <<: *defaults
+  lint:
+    <<: *defaults
 
-        steps:
-            - attach_workspace:
-                  at: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/repo
 
-            - restore_cache:
-                  keys:
-                      - v1-dependencies-{{ checksum "package.json" }}
-                      - v1-dependencies-
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
 
-            - run:
-                  name: Run linter
-                  command: npm run tslint:check
+      - run:
+          name: Run linter
+          command: npm run eslint:check
 
-            - save_cache:
-                  paths:
-                      - node_modules
-                  key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-    test:
-        <<: *defaults
-        steps:
-            - attach_workspace:
-                  at: ~/repo
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
 
-            - restore_cache:
-                  keys:
-                      - v1-dependencies-{{ checksum "package.json" }}
-                      - v1-dependencies-
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
 
-            - run:
-                  name: Run tests
-                  command: npm run test:ci
+      - run:
+          name: Run tests
+          command: npm run test:ci
 
-            - save_cache:
-                  paths:
-                      - node_modules
-                  key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
 workflows:
-    version: 2
-    build-test:
-        jobs:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - lint:
+          requires:
             - build
-            - lint:
-                  requires:
-                      - build
-            - test:
-                  requires:
-                      - build
-                      - lint
+      - test:
+          requires:
+            - build
+            - lint
