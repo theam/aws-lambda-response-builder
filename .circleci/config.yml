@@ -17,10 +17,9 @@ jobs:
             - v1-dependencies-
 
       - run: npm install
-      - run: sudo npm install typescript -g
       - run:
           name: Build project
-          command: tsc
+          command: npx tsc
 
       - save_cache:
           paths:
