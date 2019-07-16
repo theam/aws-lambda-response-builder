@@ -17,6 +17,7 @@ jobs:
                       - v1-dependencies-
 
             - run: npm install
+            - run: npm install typescript -g
             - run:
                   name: Build project
                   command: tsc
