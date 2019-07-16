@@ -37,5 +37,14 @@ module.exports = {
 			'error',
 			{ ignoreNumericLiteralTypes: true }
 		]
-	}
+	},
+	"overrides": [
+	 {
+	  "files": ["test/**/*.*"],
+		 "rules": {
+			"@typescript-eslint/no-non-null-assertion": "off",
+			"@typescript-eslint/explicit-function-return-type": "off"
+		 }
+	 }
+	]
 }

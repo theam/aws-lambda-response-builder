@@ -10,8 +10,8 @@
 		"test": "jest --watchAll",
 		"test:coverage": "jest --coverage --watchAll",
 		"test:ci": "jest --ci --maxWorkers=2 --detectOpenHandles --forceExit",
-		"eslint:check": "eslint src/**/**.ts",
-		"eslint:fix": "eslint src/**/**.ts --fix"
+		"eslint:check": "eslint --ext '.js,.jsx,.ts,.tsx' .",
+		"eslint:fix": "eslint --ext '.js,.jsx,.ts,.tsx' . --fix"
 	},
 	"keywords": [
 		"aws",
