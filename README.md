@@ -150,7 +150,7 @@ It will create a response such as:
 }
 ```
 
-### Using thhe builder
+### Using the builder
 
 ```typescript
 import { ApiGatewayResponseBuilder } from "aws-lambda-response-builder";
