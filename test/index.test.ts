@@ -2,7 +2,7 @@ import casual from 'casual'
 import {
   buildApiGatewayAcceptedResponse,
   buildApiGatewayBadRequest,
-  buildApiGatewayCreatedresponse,
+  buildApiGatewayCreatedResponse,
   buildApiGatewayCustomStatusCode,
   buildApiGatewayNotFound,
   buildApiGatewayOkResponse,
@@ -28,7 +28,7 @@ const testResponseTypes = [
   },
   {
     type: 'Created',
-    fn: buildApiGatewayCreatedresponse,
+    fn: buildApiGatewayCreatedResponse,
     expectedStatusCode: HttpStatus.CREATED
   },
   {

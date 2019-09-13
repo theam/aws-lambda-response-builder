@@ -61,7 +61,7 @@ describe('API Gateway Response Builder', () => {
     )
   })
 
-  it('creates an API Gateway response with custom headers', () => {
+  it('creates an API Gateway response with custom header', () => {
     const statusCode = casual.integer(RANDOM_START, RANDOM_END)
     const randomHeaderKey = casual.word
     const randomHeaderValue = casual.word
@@ -77,6 +77,28 @@ describe('API Gateway Response Builder', () => {
 
     expect(response.headers).not.toBeNull()
     expect(response.headers![randomHeaderKey]).toEqual(randomHeaderValue)
+  })
+
+  it('creates an API Gateway response with custom header', () => {
+    const statusCode = casual.integer(RANDOM_START, RANDOM_END)
+
+    const builder = new ApiGatewayResponseBuilder(statusCode, undefined)
+
+    const response = builder
+      .withCors()
+      .withHeaders({
+        'Content-disposition': 'attachment; filename="research-data.ifsttar.fr.png"',
+        'Content-Type': 'image/png; name="research-data.ifsttar.fr.png"'
+      })
+      .build()
+
+    expect(response.statusCode).toEqual(statusCode)
+
+    expect(response.headers).not.toBeNull()
+    expect(response.headers!['Access-Control-Allow-Origin']).toEqual('*')
+    expect(response.headers!['Access-Control-Allow-Credentials']).toEqual(true)
+    expect(response.headers!['Content-disposition']).toEqual('attachment; filename="research-data.ifsttar.fr.png"')
+    expect(response.headers!['Content-Type']).toEqual('image/png; name="research-data.ifsttar.fr.png"')
   })
 
   it('creates an API Gateway response with status code, body, CORS, and custom header', () => {

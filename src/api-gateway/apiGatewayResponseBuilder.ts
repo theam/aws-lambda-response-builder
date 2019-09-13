@@ -30,6 +30,15 @@ export class ApiGatewayResponseBuilder {
 	  return this
 	}
 
+	public withHeaders(headers: object) {
+	  this.headers = {
+	    ...this.headers,
+	    ...headers
+	  }
+
+	  return this
+	}
+
 	public build = (): APIGatewayProxyResult => {
 	  return {
 	    statusCode: this.statusCode,
