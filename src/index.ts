@@ -7,23 +7,31 @@ export * from './api-gateway/apiGatewayResponseBuilder'
 const buildApiGatewayResponse = (
   statusCode: number,
   body: object = {},
-  cors: boolean = true
+  cors: boolean = true,
+  headers?: object
 ): APIGatewayProxyResult => {
   const builder = new ApiGatewayResponseBuilder(statusCode, body)
+
   if (cors) {
     builder.withCors()
   }
+
+  if (headers) {
+    builder.withHeaders(headers)
+  }
+
   return builder.build()
 }
 
 export const buildApiGatewayOkResponse = (
   body?: object,
-  cors?: boolean
+  cors?: boolean,
+  headers?: object
 ): APIGatewayProxyResult => {
-  return buildApiGatewayResponse(HttpStatus.OK, body, cors)
+  return buildApiGatewayResponse(HttpStatus.OK, body, cors, headers)
 }
 
-export const buildApiGatewayCreatedresponse = (
+export const buildApiGatewayCreatedResponse = (
   body?: object,
   cors?: boolean
 ): APIGatewayProxyResult => {
