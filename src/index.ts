@@ -6,7 +6,7 @@ export * from './api-gateway/apiGatewayResponseBuilder'
 
 const buildApiGatewayResponse = (
   statusCode: number,
-  body: object = {},
+  body: any,
   cors: boolean = true,
   headers?: object,
   isBase64Enconded?: boolean
@@ -32,9 +32,9 @@ export const buildApiGatewayOkResponse = (
   body?: object,
   cors?: boolean,
   headers?: object,
-  isBase64Enconded?: boolean
+  isBase64Encoded?: boolean
 ): APIGatewayProxyResult => {
-  return buildApiGatewayResponse(HttpStatus.OK, body, cors, headers, isBase64Enconded)
+  return buildApiGatewayResponse(HttpStatus.OK, body, cors, headers, isBase64Encoded)
 }
 
 export const buildApiGatewayCreatedResponse = (

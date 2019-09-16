@@ -50,7 +50,7 @@ export class ApiGatewayResponseBuilder {
 	public build = (): APIGatewayProxyResult => {
 	  return {
 	    statusCode: this.statusCode,
-	    body: JSON.stringify(this.body),
+	    body: this.isBase64Encoded ? this.body : JSON.stringify(this.body),
 		headers: this.headers,
 		isBase64Encoded: this.isBase64Encoded
 	  }
