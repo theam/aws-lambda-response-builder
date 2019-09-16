@@ -9,11 +9,13 @@ export class ApiGatewayResponseBuilder {
 	private statusCode: number;
 	private body: object;
 	private headers: any;
+	private isBase64Encoded: boolean;
 
 	public constructor(statusCode: number, body?: object) {
 	  this.statusCode = statusCode
 	  this.body = body ? body : {}
 	  this.headers = {}
+	  this.isBase64Encoded = false
 	}
 
 	public withCors = (): ApiGatewayResponseBuilder => {
@@ -39,11 +41,18 @@ export class ApiGatewayResponseBuilder {
 	  return this
 	}
 
+	public withBase64Encoding() {
+		this.isBase64Encoded = true
+
+		return this
+	}
+
 	public build = (): APIGatewayProxyResult => {
 	  return {
 	    statusCode: this.statusCode,
 	    body: JSON.stringify(this.body),
-	    headers: this.headers
+		headers: this.headers,
+		isBase64Encoded: this.isBase64Encoded
 	  }
 	};
 }

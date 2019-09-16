@@ -8,7 +8,8 @@ const buildApiGatewayResponse = (
   statusCode: number,
   body: object = {},
   cors: boolean = true,
-  headers?: object
+  headers?: object,
+  isBase64Enconded?: boolean
 ): APIGatewayProxyResult => {
   const builder = new ApiGatewayResponseBuilder(statusCode, body)
 
@@ -20,15 +21,20 @@ const buildApiGatewayResponse = (
     builder.withHeaders(headers)
   }
 
+   if(isBase64Enconded) {
+     builder.withBase64Encoding()
+   }
+
   return builder.build()
 }
 
 export const buildApiGatewayOkResponse = (
   body?: object,
   cors?: boolean,
-  headers?: object
+  headers?: object,
+  isBase64Enconded?: boolean
 ): APIGatewayProxyResult => {
-  return buildApiGatewayResponse(HttpStatus.OK, body, cors, headers)
+  return buildApiGatewayResponse(HttpStatus.OK, body, cors, headers, isBase64Enconded)
 }
 
 export const buildApiGatewayCreatedResponse = (

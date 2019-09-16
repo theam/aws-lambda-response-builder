@@ -101,6 +101,30 @@ describe('API Gateway Response Builder', () => {
     expect(response.headers!['Content-Type']).toEqual('image/png; name="research-data.ifsttar.fr.png"')
   })
 
+  describe('isBase64Enconded', () => {
+    it('creates an API Gateway response with isBase64Enconded equal to false', () => {
+      const statusCode = casual.integer(RANDOM_START, RANDOM_END)
+      
+      const builder = new ApiGatewayResponseBuilder(statusCode, undefined)
+
+      const response = builder.build()
+
+      expect(response.isBase64Encoded).toEqual(false)
+    })
+
+    it('creates an API Gateway response with isBase64Enconded equal to true', () => {
+      const statusCode = casual.integer(RANDOM_START, RANDOM_END)
+      
+      const builder = new ApiGatewayResponseBuilder(statusCode, undefined)
+
+      const response = builder
+        .withBase64Encoding()
+        .build()
+
+      expect(response.isBase64Encoded).toEqual(true)
+    });
+  })
+
   it('creates an API Gateway response with status code, body, CORS, and custom header', () => {
     const statusCode = casual.integer(RANDOM_START, RANDOM_END)
     const randomHeaderKey = casual.word
