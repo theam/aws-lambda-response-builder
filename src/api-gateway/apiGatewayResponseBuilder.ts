@@ -7,7 +7,7 @@ import {
 
 export class ApiGatewayResponseBuilder {
 	private statusCode: number;
-	private body: object;
+	private body: any;
 	private headers: any;
 	private isBase64Encoded: boolean;
 
