@@ -122,7 +122,7 @@ describe('API Gateway Response Builder', () => {
         .build()
 
       expect(response.isBase64Encoded).toEqual(true)
-    });
+    })
   })
 
   it('creates an API Gateway response with status code, body, CORS, and custom header', () => {

@@ -42,17 +42,17 @@ export class ApiGatewayResponseBuilder {
 	}
 
 	public withBase64Encoding() {
-		this.isBase64Encoded = true
+	  this.isBase64Encoded = true
 
-		return this
+	  return this
 	}
 
 	public build = (): APIGatewayProxyResult => {
 	  return {
 	    statusCode: this.statusCode,
 	    body: this.isBase64Encoded ? this.body : JSON.stringify(this.body),
-		headers: this.headers,
-		isBase64Encoded: this.isBase64Encoded
+	    headers: this.headers,
+	    isBase64Encoded: this.isBase64Encoded
 	  }
 	};
 }

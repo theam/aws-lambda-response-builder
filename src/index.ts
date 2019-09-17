@@ -21,9 +21,9 @@ const buildApiGatewayResponse = (
     builder.withHeaders(headers)
   }
 
-   if(isBase64Enconded) {
-     builder.withBase64Encoding()
-   }
+  if(isBase64Enconded) {
+    builder.withBase64Encoding()
+  }
 
   return builder.build()
 }
