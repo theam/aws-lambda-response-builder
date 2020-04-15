@@ -1,6 +1,6 @@
 {
 	"name": "aws-lambda-response-builder",
-	"version": "1.0.14",
+	"version": "1.0.15",
 	"description": "A simple library to create AWS Lambda responses",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
